@@ -1,0 +1,179 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class ATM{
+private:
+    int pin;
+    double balance;
+    vector<string> transaction_history;
+
+public:
+    ATM(int userPin, double initialBalance) : pin(userPin), balance(initialBalance){
+        transaction_history.push_back("Initial Balance: Rs." + to_string(initialBalance));
+    }
+
+    bool authenticate(int enteredPin){
+        return enteredPin==pin;
+    }
+
+    void displayBalance()const{
+        cout << "Your current balance is: Rs." << balance << endl;
+    }
+
+    void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            std::cout << "$" << amount << " deposited successfully." << std::endl;
+            transactionHistory.push_back("Deposited: $" + std::to_string(amount));
+            displayBalance();
+        } else {
+            std::cout << "Invalid deposit amount." << std::endl;
+        }
+    }
+
+    void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            std::cout << "$" << amount << " withdrawn successfully." << std::endl;
+            transactionHistory.push_back("Withdrawn: $" + std::to_string(amount));
+            displayBalance();
+        } else {
+            std::cout << "Insufficient funds or invalid amount." << std::endl;
+        }
+    }
+
+    void changePin() {
+        int currentPin;
+        std::cout << "Enter your current PIN: ";
+        std::cin >> currentPin;
+
+        if (authenticate(currentPin)) {
+            int newPin, confirmPin;
+            std::cout << "Enter new PIN: ";
+            std::cin >> newPin;
+            std::cout << "Confirm new PIN: ";
+            std::cin >> confirmPin;
+
+            if (newPin == confirmPin) {
+                pin = newPin;
+                std::cout << "PIN successfully changed." << std::endl;
+            } else {
+                std::cout << "PINs do not match. PIN change failed." << std::endl;
+            }
+        } else {
+            std::cout << "Incorrect current PIN. Access denied." << std::endl;
+        }
+    }
+
+    void viewTransactionHistory() const {
+        std::cout << "\nTransaction History:" << std::endl;
+        for (const std::string& transaction : transactionHistory) {
+            std::cout << transaction << std::endl;
+        }
+    }
+};
+
+int main() {
+    int userPin = 1234;            // Example PIN for testing
+    double initialBalance = 5000.0;  // Starting balance
+    ATM atm(userPin, initialBalance);
+
+    std::cout << "Welcome to the ATM!" << std::endl;
+
+    int enteredPin;
+    std::cout << "Please enter your PIN: ";
+    std::cin >> enteredPin;
+
+    if (!atm.authenticate(enteredPin)) {
+        std::cout << "Incorrect PIN. Access denied." << std::endl;
+        return 1;
+    }
+
+    int choice;
+    do {
+        std::cout << "\nATM Menu:\n";
+        std::cout << "1. Check Balance\n";
+        std::cout << "2. Deposit Money\n";
+        std::cout << "3. Withdraw Money\n";
+        std::cout << "4. Change PIN\n";
+        std::cout << "5. View Transaction History\n";
+        std::cout << "6. Exit\n";
+        std::cout << "Select an option: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                atm.displayBalance();
+                break;
+            case 2: {
+                double depositAmount;
+                std::cout << "Enter amount to deposit: $";
+                std::cin >> depositAmount;
+                atm.deposit(depositAmount);
+                break;
+            }
+            case 3: {
+                double withdrawAmount;
+                std::cout << "Enter amount to withdraw: $";
+                std::cin >> withdrawAmount;
+                atm.withdraw(withdrawAmount);
+                break;
+            }
+            case 4:
+                atm.changePin();
+                break;
+            case 5:
+                atm.viewTransactionHistory();
+                break;
+            case 6:
+                std::cout << "Thank you for using the ATM. Goodbye!" << std::endl;
+                break;
+            default:
+                std::cout << "Invalid option. Please try again." << std::endl;
+        }
+    } while (choice != 6);
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
